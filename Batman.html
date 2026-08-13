@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<title>Batman</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    height: 100vh;
+    background: radial-gradient(circle at center, #2b0a1f 0%, #120005 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    font-family: 'Georgia', 'Times New Roman', serif;
+  }
+
+  /* ---------- TELA DE SENHA ---------- */
+  .lock-screen {
+    position: fixed;
+    inset: 0;
+    background: #0a0006;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    z-index: 10;
+  }
+
+  .lock-title {
+    color: #ffdce6;
+    font-size: 1.4rem;
+    letter-spacing: 1px;
+  }
+
+  .lock-screen input {
+    background: transparent;
+    border: 2px solid #c2185b;
+    color: #ffdce6;
+    padding: 12px 18px;
+    font-size: 1.1rem;
+    border-radius: 8px;
+    outline: none;
+    text-align: center;
+    letter-spacing: 2px;
+    width: 260px;
+  }
+
+  .lock-screen button {
+    background: #c2185b;
+    color: #fff;
+    border: none;
+    padding: 12px 28px;
+    font-size: 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    letter-spacing: 1px;
+  }
+
+  .lock-screen button:hover {
+    background: #a01249;
+  }
+
+  .lock-error {
+    color: #ff6b8b;
+    font-size: 0.9rem;
+    height: 20px;
+  }
+
+  .hidden { display: none !important; }
+
+  /* ---------- CONTEÚDO ---------- */
+  .content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .stage {
+    perspective: 1000px;
+    margin-bottom: 60px;
+  }
+
+  .rose {
+    width: 220px;
+    height: 220px;
+    position: relative;
+    transform-style: preserve-3d;
+    animation: spin 8s linear infinite;
+  }
+
+  @keyframes spin {
+    from { transform: rotateY(0deg); }
+    to { transform: rotateY(360deg); }
+  }
+
+  .petal {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 90px;
+    height: 130px;
+    background: radial-gradient(ellipse at 30% 30%, #ff6b8b, #c2185b 60%, #7a0d33 100%);
+    border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+    transform-origin: center bottom;
+    box-shadow: inset -10px -10px 20px rgba(0,0,0,0.35), 0 0 15px rgba(255,105,140,0.3);
+  }
+
+  .petal:nth-child(1)  { transform: translate(-50%,-100%) rotateY(0deg)   rotateX(15deg); }
+  .petal:nth-child(2)  { transform: translate(-50%,-100%) rotateY(51deg)  rotateX(15deg); }
+  .petal:nth-child(3)  { transform: translate(-50%,-100%) rotateY(102deg) rotateX(15deg); }
+  .petal:nth-child(4)  { transform: translate(-50%,-100%) rotateY(153deg) rotateX(15deg); }
+  .petal:nth-child(5)  { transform: translate(-50%,-100%) rotateY(204deg) rotateX(15deg); }
+  .petal:nth-child(6)  { transform: translate(-50%,-100%) rotateY(255deg) rotateX(15deg); }
+  .petal:nth-child(7)  { transform: translate(-50%,-100%) rotateY(306deg) rotateX(15deg); }
+
+  .center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 40px;
+    height: 40px;
+    background: radial-gradient(circle at 35% 35%, #ff9eb5, #c2185b);
+    border-radius: 50%;
+    transform: translate(-50%, -50%) translateZ(30px);
+    box-shadow: 0 0 12px rgba(255,158,181,0.6);
+  }
+
+  .stem {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    width: 6px;
+    height: 90px;
+    background: linear-gradient(to bottom, #2e7d32, #1b5e20);
+    transform: translateX(-50%);
+    border-radius: 3px;
+  }
+
+  .message {
+    font-size: 1.9rem;
+    color: #ffdce6;
+    text-shadow: 0 0 20px rgba(255, 105, 140, 0.7), 0 0 40px rgba(194, 24, 91, 0.4);
+    letter-spacing: 1px;
+    text-align: center;
+    max-width: 700px;
+    text-transform: uppercase;
+    animation: pulse 2.5s ease-in-out infinite;
+  }
+
+  .message img.emoji {
+    height: 1.3em;
+    width: 1.3em;
+    vertical-align: -0.28em;
+    margin: 0 2px;
+    filter: drop-shadow(0 0 6px rgba(255,105,140,0.5));
+  }
+
+  .signature {
+    margin-top: 18px;
+    font-size: 1.2rem;
+    color: #ff8fa8;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    opacity: 0.9;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 0.85; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.04); }
+  }
+
+  .petals-fall {
+    position: fixed;
+    top: -20px;
+    font-size: 1.2rem;
+    color: #ff6b8b;
+    animation: fall linear infinite;
+    opacity: 0.7;
+  }
+
+  @keyframes fall {
+    to { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+  }
+</style>
+</head>
+<body>
+
+  <div class="lock-screen" id="lockScreen">
+    <div class="lock-title">DIGITE A SENHA</div>
+    <input type="password" id="passwordInput" placeholder="••••••••" autocomplete="off">
+    <button onclick="checkPassword()">ENTRAR</button>
+    <div class="lock-error" id="lockError"></div>
+  </div>
+
+  <div class="content hidden" id="content">
+    <div class="stage">
+      <div class="rose">
+        <div class="petal"></div>
+        <div class="petal"></div>
+        <div class="petal"></div>
+        <div class="petal"></div>
+        <div class="petal"></div>
+        <div class="petal"></div>
+        <div class="petal"></div>
+        <div class="center"></div>
+        <div class="stem"></div>
+      </div>
+    </div>
+
+    <div class="message">CONTIGO, TUDO FAZ SENTIDO, AMO-TE 🤘🏾🫶🏾😹</div>
+    <div class="signature">— BATMAN</div>
+  </div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/twemoji.min.js" crossorigin="anonymous"></script>
+<script>
+  const SENHA = "garoto de programa456Batman";
+
+  function checkPassword() {
+    const input = document.getElementById('passwordInput').value;
+    if (input === SENHA) {
+      document.getElementById('lockScreen').classList.add('hidden');
+      document.getElementById('content').classList.remove('hidden');
+      spawnPetals();
+    } else {
+      document.getElementById('lockError').textContent = "SENHA INCORRETA";
+    }
+  }
+
+  document.getElementById('passwordInput').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') checkPassword();
+  });
+
+  // Converte os emojis de texto em imagens coloridas (estilo Twitter/X)
+  if (window.twemoji) {
+    twemoji.parse(document.querySelector('.message'), { className: 'emoji' });
+  }
+
+  function spawnPetals() {
+    const symbols = ['❀', '❁', '✿'];
+    for (let i = 0; i < 18; i++) {
+      const p = document.createElement('div');
+      p.className = 'petals-fall';
+      p.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+      p.style.left = Math.random() * 100 + 'vw';
+      p.style.animationDuration = (6 + Math.random() * 6) + 's';
+      p.style.animationDelay = (Math.random() * 6) + 's';
+      p.style.fontSize = (0.8 + Math.random() * 1.2) + 'rem';
+      document.body.appendChild(p);
+    }
+  }
+</script>
+
+</body>
+</html>
